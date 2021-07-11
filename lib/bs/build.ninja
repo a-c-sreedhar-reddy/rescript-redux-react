@@ -1,0 +1,17 @@
+rescript = 1
+g_finger := /Users/acsreedharreddy/rescript-react-redux/node_modules/@rescript/react/lib/ocaml/install.stamp
+rule astj
+  command = /Users/acsreedharreddy/rescript-react-redux/node_modules/rescript/darwin/bsc.exe  -bs-v 9.1.4 -bs-jsx 3  -absname -bs-ast -o $out $i
+o src/Test.ast : astj ../../src/Test.res
+rule deps
+  command = /Users/acsreedharreddy/rescript-react-redux/node_modules/rescript/darwin/bsb_helper.exe -hash 85f5924dc7682ea38bd145390f77f5a5 $in
+  restat = 1
+o src/Test.d : deps src/Test.ast
+rule mij
+  command = /Users/acsreedharreddy/rescript-react-redux/node_modules/rescript/darwin/bsc.exe -I src -I /Users/acsreedharreddy/rescript-react-redux/node_modules/@rescript/react/lib/ocaml   -bs-package-name your-project-name -bs-package-output es6:$in_d:.bs.js -bs-v $g_finger $i
+  dyndep = 1
+  restat = 1
+o src/Test.cmj src/Test.cmi ../../src/Test.bs.js : mij src/Test.ast
+o src/reducer.ast : astj ../../src/reducer.res
+o src/reducer.d : deps src/reducer.ast
+o src/reducer.cmj src/reducer.cmi ../../src/reducer.bs.js : mij src/reducer.ast
